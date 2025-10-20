@@ -5,6 +5,7 @@ from taxi.models import Driver, Car, Manufacturer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+
 class SearchTests(TestCase):
     def setUp(self):
         # створюємо тестові дані
@@ -19,11 +20,19 @@ class SearchTests(TestCase):
             license_number="XYZ98765"
         )
 
-        self.manufacturer1 = Manufacturer.objects.create(name="Toyota", country="Japan")
-        self.manufacturer2 = Manufacturer.objects.create(name="Tesla", country="USA")
+        self.manufacturer1 = Manufacturer.objects.create(
+            name="Toyota",
+            country="Japan")
+        self.manufacturer2 = Manufacturer.objects.create(
+            name="Tesla",
+            country="USA")
 
-        self.car1 = Car.objects.create(model="Corolla", manufacturer=self.manufacturer1)
-        self.car2 = Car.objects.create(model="Model S", manufacturer=self.manufacturer2)
+        self.car1 = Car.objects.create(
+            model="Corolla",
+            manufacturer=self.manufacturer1)
+        self.car2 = Car.objects.create(
+            model="Model S",
+            manufacturer=self.manufacturer2)
 
         self.client.force_login(self.driver1)
 
@@ -45,8 +54,12 @@ class SearchTests(TestCase):
         url = reverse("taxi:manufacturer-list")
         response = self.client.get(url, {"name": "Tesla"})
 
-        self.assertIn(self.manufacturer2, response.context["manufacturer_list"])
-        self.assertNotIn(self.manufacturer1, response.context["manufacturer_list"])
+        self.assertIn(
+            self.manufacturer2,
+            response.context["manufacturer_list"])
+        self.assertNotIn(
+            self.manufacturer1,
+            response.context["manufacturer_list"])
 
     def test_search_no_results(self):
         url = reverse("taxi:driver-list")
