@@ -11,7 +11,7 @@ class ModelTests(TestCase):
         cls.test_password = "testpassword123"
         cls.test_first_name = "John"
         cls.test_last_name = "Doe"
-        cls.test_license_number = "ABC-12345"
+        cls.test_license_number = "ABC12345"
 
         cls.driver = get_user_model().objects.create_user(
             username=cls.test_username,
@@ -26,7 +26,8 @@ class ModelTests(TestCase):
 
     def test_manufacturer_str(self):
         # Використовуємо об'єкт, створений в setUpTestData
-        self.assertEqual(str(self.manufacturer), "Toyota Japan")
+        self.assertEqual(str(self.manufacturer),
+                         f"{self.name} {self.country}")
 
     def test_driver_str(self):
         # Використовуємо об'єкт, створений в setUpTestData
@@ -42,10 +43,10 @@ class ModelTests(TestCase):
             password="anotherpassword",
             first_name="Jane",
             last_name="Smith",
-            license_number="XYZ-98765"
+            license_number="XYZ98765"
         )
         self.assertEqual(temp_driver.username, "another_user")
         self.assertEqual(
             temp_driver.license_number,
-            "XYZ-98765")
+            "XYZ98765")
         self.assertTrue(temp_driver.check_password("anotherpassword"))
