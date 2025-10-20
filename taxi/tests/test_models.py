@@ -27,14 +27,16 @@ class ModelTests(TestCase):
     def test_manufacturer_str(self):
         # Використовуємо об'єкт, створений в setUpTestData
         self.assertEqual(str(self.manufacturer),
-                         f"{self.name} {self.country}")
+                         f"{self.manufacturer.name} "
+                         f"{self.manufacturer.country}"
+                         )
 
     def test_driver_str(self):
         # Використовуємо об'єкт, створений в setUpTestData
         self.assertEqual(
             str(self.driver),
-            f"{self.driver.username} ("
-            f"{self.driver.first_name} {self.driver.last_name})"
+            f"{self.driver.username} "
+            f"({self.driver.first_name} {self.driver.last_name})"
         )
 
     def test_create_driver(self):

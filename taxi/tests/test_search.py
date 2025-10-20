@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from taxi.models import Driver, Car, Manufacturer
+from taxi.models import Car, Manufacturer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -50,6 +50,11 @@ class SearchTests(TestCase):
         self.assertIn(self.car1, response.context["car_list"])
         self.assertNotIn(self.car2, response.context["car_list"])
 
+    def test_search_car_no_results(self):
+        url = reverse("taxi:car-list")
+        response = self.client.get(url, {"model": "DoesNotExist"})
+        self.assertEqual(len(response.context["car_list"]), 0)
+
     def test_search_manufacturer_by_name(self):
         url = reverse("taxi:manufacturer-list")
         response = self.client.get(url, {"name": "Tesla"})
@@ -60,6 +65,11 @@ class SearchTests(TestCase):
         self.assertNotIn(
             self.manufacturer1,
             response.context["manufacturer_list"])
+
+    def test_search_manufacturer_no_results(self):
+        url = reverse("taxi:manufacturer-list")
+        response = self.client.get(url, {"name": "Unknown"})
+        self.assertEqual(len(response.context["manufacturer_list"]), 0)
 
     def test_search_no_results(self):
         url = reverse("taxi:driver-list")
